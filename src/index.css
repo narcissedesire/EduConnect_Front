@@ -1,0 +1,85 @@
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+@import url("https://unpkg.com/leaflet/dist/leaflet.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.header {
+  background-image: url("./images/fond_hero.jpg");
+}
+
+.btn {
+  transition: background-color 0.3s ease-in-out;
+}
+
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+}
+
+.slick-slide {
+  display: inline-block;
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 1;
+}
+
+/* Personnalisation des flèches slick */
+.slick {
+  display: flex;
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(
+    30,
+    144,
+    255,
+    0.8
+  ); /* Couleur bleu avec transparence */
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  background-color: rgba(30, 144, 255, 1); /* Bleu plein au survol */
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-size: 20px;
+  color: white;
+  opacity: 1 !important; /* Rendre les flèches visibles */
+}
+
+/* Position des flèches */
+.slick-prev {
+  left: -50px;
+}
+.slick-next {
+  right: -50px;
+}
+
+/* Personnalisation des points de pagination */
+.slick-dots {
+  bottom: -25px;
+}
+.slick-dots li button:before {
+  font-size: 12px;
+  color: rgba(30, 144, 255, 0.5); /* Bleu clair */
+}
+.slick-dots li.slick-active button:before {
+  color: rgba(30, 144, 255, 1); /* Bleu plein pour l'élément actif */
+}
