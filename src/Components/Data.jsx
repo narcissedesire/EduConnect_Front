@@ -8,9 +8,9 @@ import {
 
 export const LienNav = [
   { href: "/", label: "Accueil" },
+  { href: "/cours", label: "Cours" },
   { href: "/about", label: "À Propos" },
   { href: "/contact", label: "Contact" },
-  { href: "/cours", label: "Cours" },
 ];
 
 export const fonctionnalites = [

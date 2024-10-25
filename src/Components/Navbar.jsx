@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { LienNav } from "./Data";
 import logo from "/images/logo.png";
 
 const Navbar = () => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -62,7 +63,9 @@ const Navbar = () => {
             <Link
               key={index}
               to={item.href}
-              className="block px-3 py-2 rounded hover:bg-gray-700"
+              className={`block px-3 py-2 rounded hover:bg-gray-700 ${
+                location.pathname === item.href ? "bg-gray-700 text-white" : ""
+              }`}
             >
               {item.label}
             </Link>

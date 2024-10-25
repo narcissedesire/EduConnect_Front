@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { lessonsData } from "../Components/Data";
+import CourseInfo from "../Components/DetailCours/CourseInfo";
+import Modules from "../Components/DetailCours/Modules";
+import PdfFiles from "../Components/DetailCours/PdfFiles";
 import Videos from "../Components/DetailCours/Videos";
+import CommentSection from "../Components/DetailCours/CommentSection";
 
 export default function CourseDetail() {
   const { id } = useParams();
@@ -25,6 +29,12 @@ export default function CourseDetail() {
       dislikes: 0,
     }))
   );
+
+  // Information du cours
+  // Calcul de la progression
+  const totalModules = lesson.modules.length;
+  const completedModules = lesson.completedModules;
+  const progress = (completedModules / totalModules) * 100;
 
   // Gérer les réactions
   const handleReaction = (index, type) => {
@@ -120,6 +130,19 @@ export default function CourseDetail() {
 
   return (
     <div className="bg-gray-100 py-10 mt-20">
+      <CourseInfo
+        lesson={lesson}
+        progress={progress}
+        completedModules={completedModules}
+        totalModules={totalModules}
+      />
+
+      {/* Modules/Chapitres */}
+      <Modules lesson={lesson} />
+
+      {/* Section PDF */}
+      <PdfFiles lesson={lesson} />
+
       <Videos
         lesson={lesson}
         handleCommentSubmit={handleCommentSubmitFonc}
@@ -146,6 +169,9 @@ export default function CourseDetail() {
         editingText={editingText} // Texte édité
         setEditingText={setEditingText} // Définir le texte édité
       />
+
+      {/* Section des avis */}
+      <CommentSection reactions={reactions} handleReaction={handleReaction} />
     </div>
   );
 }

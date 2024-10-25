@@ -9,7 +9,7 @@ export default function AboutSection() {
             Découvrez une nouvelle façon d’apprendre
           </h2>
           <p className="text-lg leading-relaxed mb-6">
-            LearnPro est une plateforme innovante, conçue pour vous offrir une
+            EduConnect est une plateforme innovante, conçue pour vous offrir une
             expérience d'apprentissage sur-mesure. Accédez à des cours, suivez
             vos progrès, et atteignez vos objectifs, le tout à votre rythme.
           </p>
