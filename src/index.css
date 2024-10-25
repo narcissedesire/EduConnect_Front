@@ -7,7 +7,7 @@
 @tailwind utilities;
 
 .header {
-  background-image: url("./images/fond_hero.jpg");
+  background-image: url("/images/fond_hero.jpg");
 }
 
 .btn {

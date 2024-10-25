@@ -9,10 +9,10 @@ export default function Introduction() {
             Apprendre, Enseigner et Grandir Ensemble
           </h1>
           <p className="mt-6 text-lg text-gray-700 leading-relaxed">
-            Bienvenue sur <strong>[Nom de la plateforme]</strong>, votre
-            destination de confiance pour un apprentissage moderne et efficace.
-            Apprenez à votre rythme, collaborez avec vos enseignants et suivez
-            vos progrès facilement grâce à des outils innovants.
+            Bienvenue sur <strong>EduConnect</strong>, votre destination de
+            confiance pour un apprentissage moderne et efficace. Apprenez à
+            votre rythme, collaborez avec vos enseignants et suivez vos progrès
+            facilement grâce à des outils innovants.
           </p>
           <ul className="mt-6 space-y-4">
             <li className="flex items-start">
