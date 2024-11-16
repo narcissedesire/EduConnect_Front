@@ -6,6 +6,11 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  padding: 0;
+  margin: 0;
+}
+
 .header {
   background-image: url("/images/fond_hero.jpg");
 }
