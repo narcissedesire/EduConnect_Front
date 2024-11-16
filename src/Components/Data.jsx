@@ -4,6 +4,13 @@ import {
   FaCertificate,
   FaChalkboardTeacher,
   FaMobileAlt,
+  FaHome,
+  FaBook,
+  FaClipboard,
+  FaUser,
+  FaCog,
+  FaQuestionCircle,
+  FaSignOutAlt,
 } from "react-icons/fa";
 
 export const LienNav = [
@@ -11,6 +18,57 @@ export const LienNav = [
   { href: "/cours", label: "Cours" },
   { href: "/about", label: "À Propos" },
   { href: "/contact", label: "Contact" },
+];
+
+export const LinkSidebarProfil = [
+  { label: "Dashboard", href: "/profile", icon: <FaHome /> },
+  {
+    label: "Certificat et Badge",
+    href: "/profile/cetification-badge",
+    icon: <FaHome />,
+  },
+  { label: "Cours", href: "/profile/cours", icon: <FaHome /> },
+  {
+    label: "Notification et Message",
+    href: "/profile/notification-message",
+    icon: <FaHome />,
+  },
+  { label: "test", href: "/profile/test", icon: <FaHome /> },
+];
+
+// Faut data cetification et badge
+export const badges = [
+  {
+    id: 1,
+    title: "100% de progression sur un cours",
+    icon: "🏅",
+    color: "bg-blue-500",
+  },
+  {
+    id: 2,
+    title: "Participation à un webinaire",
+    icon: "🎓",
+    color: "bg-green-500",
+  },
+  {
+    id: 3,
+    title: "Certification de projet",
+    icon: "📜",
+    color: "bg-yellow-500",
+  },
+];
+
+export const certifications = [
+  {
+    id: 1,
+    title: "Certificat de Complétion de Cours",
+    fileUrl: "/certificates/cours-completion.pdf",
+  },
+  {
+    id: 2,
+    title: "Certificat de Compétence",
+    fileUrl: "/certificates/competence-cert.pdf",
+  },
 ];
 
 export const fonctionnalites = [
