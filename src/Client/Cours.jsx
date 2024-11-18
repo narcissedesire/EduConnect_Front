@@ -2,22 +2,72 @@ import React, { useState, useEffect, useRef } from "react";
 import SearchBar from "../Components/Cours/SearchBar";
 import FilterBar from "../Components/Cours/FilterBar";
 import Pagination from "../Components/Cours/Pagination";
-import { lessonsData } from "../Components/Data";
 import LessonCard from "../Components/Cours/LessonCard";
+import { Port } from "../Port";
+import { checkTokenExpiration } from "../Components/TokenExpire";
 
 export default function Cours() {
-  const categories = ["Développement", "Design", "Business"];
-  const sortOptions = ["Tous", "recent", "popularity"];
+  useEffect(() => {
+    checkTokenExpiration();
+  });
+
+  const sortOptions = ["Tous", "recent"];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [dataCours, setDataCours] = useState([]);
 
   const [activeFilter, setActiveFilter] = useState("Tous");
   const [sortOption, setSortOption] = useState(sortOptions[0]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const lessonsPerPage = 4;
+  const lessonsPerPage = 2;
 
   const suggestionRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Récupération des données des cours
+  const fetchCours = async () => {
+    try {
+      const response = await fetch(`/api/cours`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération des données");
+      }
+      const data = await response.json();
+      setDataCours(data.cours);
+      setLoading(false);
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  const fetchCategorie = async () => {
+    try {
+      const response = await fetch(`${Port}/categorie`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération des données");
+      }
+      const data = await response.json();
+      setCategories(data.categorie);
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCours();
+    fetchCategorie();
+  }, []);
 
   // Rendre les accents comme tous les autres caractères
   const removeAccents = (str) => {
@@ -27,20 +77,20 @@ export default function Cours() {
   // Fonction de tri
   const sortLessons = (lessons) => {
     if (sortOption === "recent") {
-      return lessons.sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else if (sortOption === "popularity") {
-      return lessons.sort((a, b) => b.popularity - a.popularity);
+      return lessons.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
     }
     return lessons;
   };
 
   // Filtrer les cours
   const filterLessons = () => {
-    const filtered = lessonsData.filter(
+    const filtered = dataCours.filter(
       (lesson) =>
-        (activeFilter === "Tous" || lesson.category === activeFilter) &&
+        (activeFilter === "Tous" || lesson.categorie.id === activeFilter) &&
         (searchQuery === "" ||
-          removeAccents(lesson.title)
+          removeAccents(lesson.titre)
             .toLowerCase()
             .includes(removeAccents(searchQuery).toLowerCase()))
     );
@@ -57,7 +107,7 @@ export default function Cours() {
       startIndex + lessonsPerPage
     );
     return selectedLessons.map((lesson) => (
-      <LessonCard key={lesson.id} lesson={lesson} />
+      <LessonCard key={lesson.id} lessons={lesson} />
     ));
   };
 
@@ -67,10 +117,11 @@ export default function Cours() {
     setSearchQuery(query);
     if (query) {
       const normalizedQuery = removeAccents(query).toLowerCase();
-      const suggestions = lessonsData.filter(
+      const suggestions = dataCours.filter(
         (lesson) =>
-          (activeFilter === "Tous" || lesson.category === activeFilter) &&
-          removeAccents(lesson.title).toLowerCase().includes(normalizedQuery)
+          (activeFilter === "Tous" ||
+            lesson.categorie.label === activeFilter) &&
+          removeAccents(lesson.titre).toLowerCase().includes(normalizedQuery)
       );
       setFilteredSuggestions(suggestions);
     } else {
@@ -87,7 +138,7 @@ export default function Cours() {
 
   // Fonction de suggestion de texte
   const handleSuggestionClick = (suggestion) => {
-    setSearchQuery(suggestion.title);
+    setSearchQuery(suggestion.titre);
     setFilteredSuggestions([]);
   };
 
@@ -123,7 +174,7 @@ export default function Cours() {
           handleSuggestionClick={handleSuggestionClick}
           suggestionRef={suggestionRef}
           inputRef={inputRef}
-          handleKeyDown={handleKeyDown} // Ajout de l'événement
+          handleKeyDown={handleKeyDown}
         />
 
         {/* FilterBar */}

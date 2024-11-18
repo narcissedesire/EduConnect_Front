@@ -8,6 +8,16 @@ export default function CourseInfo({
   completedModules,
   totalModules,
 }) {
+  const inscriptions = lesson?.inscriptions;
+
+  const nombreEtudiants = inscriptions
+    ? inscriptions.filter((inscription) => inscription?.etudiant).length
+    : 0;
+
+  const totalDuration = lesson?.modules?.reduce((total, module) => {
+    const dure = Number(module.dure);
+    return total + (isNaN(dure) ? 0 : dure);
+  }, 0);
   return (
     <div className="container mx-auto flex flex-col md:flex-row px-4 sm:px-6 lg:px-8">
       <div className="md:w-1/2 mb-6 md:mb-0">
@@ -20,31 +30,35 @@ export default function CourseInfo({
 
       <div className="md:w-1/2 md:pl-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          {lesson.title}
+          {lesson?.titre || "Titre indisponible"}
         </h1>
 
         <div className="mb-4 text-gray-700">
-          <p className="font-semibold">Enseignant : {lesson.instructor}</p>
           <p className="font-semibold">
-            Étudiants inscrits : {lesson.studentsEnrolled}
+            Enseignant : {lesson.enseignant.utilisateur.nom}
+          </p>
+          <p className="font-semibold">
+            Étudiants inscrits : {nombreEtudiants}
           </p>
         </div>
 
         <div className="flex flex-wrap gap-4 mb-4">
           <span className="flex items-center bg-blue-500 text-white rounded-full px-3 py-1 text-xs font-semibold shadow">
-            <FaBookOpen className="mr-1" /> {lesson.level}
+            <FaBookOpen className="mr-1" /> {lesson.niveau.label}
           </span>
           <span className="flex items-center bg-green-500 text-white rounded-full px-3 py-1 text-xs font-semibold shadow">
-            <FaClock className="mr-1" /> {lesson.duration}
+            <FaClock className="mr-1" /> {totalDuration}
           </span>
           <span
             className={`flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
-              lesson.free ? "bg-blue-600 text-white" : "bg-red-600 text-white"
+              lesson.isGratuit
+                ? "bg-blue-600 text-white"
+                : "bg-red-600 text-white"
             } shadow`}
           >
-            {lesson.free ? "Gratuit" : "Payant"}
+            {lesson.isGratuit ? "Gratuit" : "Payant"}
           </span>
-          {lesson.certification && (
+          {lesson.isCertifier && (
             <span className="flex items-center bg-yellow-500 text-white rounded-full px-3 py-1 text-xs font-semibold shadow">
               <FaCheckCircle className="mr-1" /> Certifié
             </span>
@@ -56,7 +70,7 @@ export default function CourseInfo({
           <div className="relative pt-1">
             <div className="flex items-center justify-between mb-1">
               <div className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-teal-600 bg-teal-200">
-                {progress.toFixed(0)}%
+                {progress}%
               </div>
               <div className="text-xs font-semibold text-teal-600">
                 {completedModules} / {totalModules} Modules
@@ -65,7 +79,7 @@ export default function CourseInfo({
             <div className="flex items-center h-2 bg-gray-200 rounded">
               <div
                 className="bg-teal-600 h-2 rounded"
-                style={{ width: `${progress}%` }}
+                style={{ width: `${progress.toFixed(2)}%` }}
               ></div>
             </div>
           </div>

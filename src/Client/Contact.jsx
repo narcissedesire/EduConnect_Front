@@ -1,13 +1,18 @@
 // Contact.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import ContactForm from "../Components/Contact/ContactForm";
 import ContactInfo from "../Components/Contact/ContactInfo";
 import Map from "../Components/Contact/Map";
+import { checkTokenExpiration } from "../Components/TokenExpire";
 
 export default function Contact() {
   const handleFormSubmit = (formData) => {
     console.log(formData);
   };
+
+  useEffect(() => {
+    checkTokenExpiration();
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-3 lg:px-8 mt-16">

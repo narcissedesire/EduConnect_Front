@@ -25,15 +25,15 @@ export default function FilterBar({
           </button>
           {categories.map((category) => (
             <button
-              key={category}
-              onClick={() => setActiveFilter(category)}
+              key={category.id}
+              onClick={() => setActiveFilter(category.id)}
               className={`px-3 py-2 md:px-5 rounded-full border w-full md:w-auto ${
-                activeFilter === category
+                activeFilter === category.id
                   ? "bg-primary text-white border-primary"
                   : "text-gray-600 border-gray-300"
               } hover:bg-primary hover:text-white transition`}
             >
-              {category}
+              {category.label}
             </button>
           ))}
         </div>

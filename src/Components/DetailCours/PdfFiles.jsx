@@ -6,24 +6,44 @@ export default function PdfFiles({ lesson }) {
       <h2 className="text-2xl font-semibold mb-4 text-gray-900">
         Fichiers PDF
       </h2>
-      {lesson.pdfFiles && lesson.pdfFiles.length > 0 ? (
-        <ul className="list-disc list-inside space-y-2">
-          {lesson.pdfFiles.map((pdf, index) => (
-            <li key={index}>
-              <a
-                href={pdf}
-                className="text-blue-600 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Télécharger {pdf.split("/").pop()}
-              </a>
-            </li>
-          ))}
-        </ul>
+      {lesson.modules.length > 0 ? (
+        lesson.modules.map((module, index) => (
+          <div key={index}>
+            <h2>Module : {module.nom}</h2>
+            {module.fichiers.length > 0 ? (
+              <ul>
+                {module.fichiers.map((fichier, i) => (
+                  <li key={i}>
+                    <a
+                      href={fichier.contenu}
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Télécharger {fichier.nom.split("/").pop()}.pdf
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Aucun fichier disponible pour ce module.</p>
+            )}
+          </div>
+        ))
       ) : (
-        <p className="text-gray-600">Aucun fichier PDF disponible.</p>
+        <p>Aucun module disponible.</p>
       )}
     </div>
   );
+}
+
+{
+  /* <a
+  href={pdf}
+  className="text-blue-600 hover:underline"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Télécharger {pdf.split("/").pop()}
+</a>; */
 }

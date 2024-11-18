@@ -14,7 +14,7 @@ export default function Modules({ lesson }) {
               className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105"
             >
               <h3 className="text-xl font-semibold mb-2 text-blue-700">
-                {module.title}
+                {module.nom}
               </h3>
               <p className="text-gray-600">{module.description}</p>
             </div>

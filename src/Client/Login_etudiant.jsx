@@ -1,23 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoPerson } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { Link } from "react-router-dom"; // Assurez-vous que react-router-dom est installé pour le routage
+import { Link } from "react-router-dom";
+import { Port } from "../Port";
+import { checkTokenExpiration } from "../Components/TokenExpire";
 
 export default function Login_etudiant() {
-  // Définir les états pour l'email, le mot de passe et le message d'erreur
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [mot_passe, setMot_passe] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    checkTokenExpiration();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!email || !mot_passe) {
       setError("Veuillez remplir tous les champs.");
       return;
     }
 
-    setError("");
-    console.log("Connexion en cours avec :", { email, password });
+    const existingToken = localStorage.getItem("token");
+    if (existingToken) {
+      navigate("/");
+      console.log(existingToken);
+      return;
+    }
+    try {
+      const response = await fetch(`/api/auth/login`, {
+        method: "POST",
+        body: JSON.stringify({ email, mot_passe }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || "Erreur inconnue lors de la connexion.");
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Connexion réussie :", data);
+
+      // Vérifiez le message de succès
+      if (data.status === "success") {
+        const expirationTime = new Date().getTime() + 12 * 60 * 60 * 1000;
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("tokenExpiration", expirationTime);
+
+        navigate("/");
+      } else {
+        setError(data.message || "Erreur inconnue.");
+      }
+    } catch (e) {
+      setError("Erreur réseau ou problème inattendu.");
+      console.error("Erreur lors de la connexion :", e);
+    }
   };
 
   return (
@@ -33,6 +73,7 @@ export default function Login_etudiant() {
           <span className="text-[28px] font-semibold text-center">
             Réjoindre votre classe
           </span>
+          <span>{error}</span>
           <div className="flex flex-col items-center gap-3">
             {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
             <div className="flex items-center gap-5 border px-5 py-3 text-[18px] rounded">
@@ -59,8 +100,8 @@ export default function Login_etudiant() {
                   type="password"
                   className="outline-none bg-transparent w-full"
                   placeholder="Votre mot de passe..."
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={mot_passe}
+                  onChange={(e) => setMot_passe(e.target.value)}
                   required
                 />
               </span>
@@ -69,10 +110,9 @@ export default function Login_etudiant() {
               SE CONNECTER
             </button>
 
-            {/* Ajout des liens d'inscription et de mot de passe oublié */}
             <div className="flex flex-col items-center gap-2 mt-4 text-sm">
               <Link
-                to="/forgot-password"
+                to="/forgot-mot_passe"
                 className="text-indigo-500 hover:text-indigo-700 transition duration-200"
               >
                 Mot de passe oublié ?

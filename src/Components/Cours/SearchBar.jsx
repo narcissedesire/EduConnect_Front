@@ -36,7 +36,7 @@ export default function SearchBar({
               className="px-4 py-2 cursor-pointer hover:bg-primary hover:text-white transition"
               onClick={() => handleSuggestionClick(suggestion)}
             >
-              {suggestion.title}
+              {suggestion.titre}
             </li>
           ))}
         </ul>

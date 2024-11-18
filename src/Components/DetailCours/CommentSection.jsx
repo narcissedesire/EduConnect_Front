@@ -6,21 +6,22 @@ import {
   FaHandshake,
   FaThumbsDown,
 } from "react-icons/fa";
+import { formatCreatedAt } from "../FonctionUtile";
 
-export default function CommentSection({ reactions, handleReaction }) {
+export default function CommentSection({ reactions, handleReaction, lesson }) {
   return (
     <div className="mt-10 container mx-auto px-4 sm:px-6 lg:px-8 bg-gray-200 p-4 rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-4 text-gray-900">Avis</h2>
       <div className="space-y-4">
-        {reactions.length > 0 ? (
-          reactions.map((review, index) => (
+        {lesson.avis?.length > 0 ? (
+          lesson.avis?.map((review, index) => (
             <div
               key={index}
               className="bg-white border border-gray-300 p-4 rounded-lg shadow-md flex items-start space-x-4 hover:bg-gray-50 transition"
             >
               <img
                 className="w-12 h-12 rounded-full border-2 border-blue-500"
-                src={review.userImage}
+                src={review.utilisateur.nom}
                 alt={review.userName}
               />
               <div className="flex-1">
@@ -32,8 +33,10 @@ export default function CommentSection({ reactions, handleReaction }) {
                     <FaStar key={i} />
                   ))}
                 </div>
-                <p className="text-gray-500">{review.comment}</p>
-                <p className="text-gray-400 text-xs">{review.date}</p>
+                <p className="text-gray-500">{review.text}</p>
+                <p className="text-gray-400 text-xs">
+                  {formatCreatedAt(review.createdAt)}
+                </p>
 
                 {/* Section pour les réactions */}
                 <div className="flex items-center mt-2 space-x-4">

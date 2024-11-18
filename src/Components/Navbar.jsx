@@ -6,34 +6,29 @@ import logo from "/images/logo.png";
 const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef(null); // Référence pour la fenêtre modale
+  const menuRef = useRef(null);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  // Nouvelle fonction pour fermer le menu
   const closeMenu = () => {
     setIsOpen(false);
   };
 
-  // Fermer le menu si un clic est effectué en dehors de la fenêtre modale
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       closeMenu();
     }
   };
 
-  // Scroll to top when the pathname changes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
   useEffect(() => {
-    // Ajouter l'écouteur d'événements lors du montage
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Nettoyer l'écouteur d'événements lors du démontage
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -42,13 +37,10 @@ const Navbar = () => {
   return (
     <nav className="bg-gray-900 text-white fixed w-full z-50">
       <div className="container mx-auto px-5 py-3 flex justify-between items-center">
-        {/* Logo */}
         <div className="flex items-center">
           <img src={logo} alt="Logo" className="h-14" />
-          {/* <span className="ml-2 text-xl font-bold">Votre Plateforme</span> */}
         </div>
 
-        {/* Bouton pour mobile */}
         <div className="md:hidden">
           <button onClick={toggleMenu} className="focus:outline-none">
             {isOpen ? (
@@ -99,7 +91,7 @@ const Navbar = () => {
             </Link>
           ))}
           <Link
-            to="/login"
+            to="/login-etudiant"
             className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
           >
             Connexion
@@ -125,7 +117,7 @@ const Navbar = () => {
           </Link>
         ))}
         <Link
-          to="/login"
+          to="/login-etudiant"
           className="block px-4 py-2 bg-primary hover:bg-primary/75 text-secondary text-center"
           onClick={closeMenu}
         >
