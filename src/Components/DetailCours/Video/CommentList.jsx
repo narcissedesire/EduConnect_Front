@@ -1,54 +1,154 @@
-import React from "react";
+import React, { useState } from "react";
 import ReplyItem from "./ReplyItem";
+import { formatCreatedAt } from "../../FonctionUtile";
 
-export default function CommentList({
-  comments,
-  handleReply,
-  handleEditComment,
-  handleDeleteComment,
-  handleEditReply,
-  handleDeleteReply,
-  replyToIndex,
-  setReplyComment,
-  replyComment,
-  handleReplySubmit,
-  editingCommentIndex,
-  setEditingCommentIndex,
-  editingReplyIndex,
-  setEditingReplyIndex,
-  editingText,
-  setEditingText,
-}) {
+export default function CommentList({ comments, fetchCoursId }) {
+  const [editingComment, setEditingComment] = useState("");
+  const [text, setText] = useState("");
+  const [isEditing, setIsEditing] = useState(null);
+  const [isRepond, setIsRepond] = useState(false);
+  const [textReponse, setTextReponse] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const id_utilisateur = "00c18c33-20b6-4657-8c50-a4c482fd2109";
+
+  const handleRepondToggle = (commentId) => {
+    setIsRepond((prev) => (prev === commentId ? null : commentId));
+  };
+
+  const handleModifier = (commentId) => {
+    setIsEditing((prev) => (prev === commentId ? null : commentId));
+  };
+
+  async function handleEditComment(id) {
+    try {
+      const response = await fetch(`/api/commentaire/update/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ text: editingComment }),
+      });
+      if (!response.ok) {
+        throw new Error("Erreur lors de la modification du commentaire");
+      }
+      const data = await response.json();
+      fetchCoursId();
+      setText("");
+      setError(null);
+      setSuccessMessage("Modification du commentaire reussi", data);
+    } catch (error) {
+      setError(error.message);
+      setSuccessMessage(null);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDeleteComment(id) {
+    try {
+      const response = await fetch(`/api/commentaire/delete/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Erreur lors de la suppression du commentaire");
+      }
+      const data = await response.json();
+      fetchCoursId();
+      setError(null);
+      setSuccessMessage(data.message);
+    } catch (error) {
+      setError(error.message);
+      setSuccessMessage(null);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleRepondre = async (id) => {
+    if (!textReponse) {
+      setError("Le commentaire ne peut pas être vide.");
+      setSuccessMessage(null);
+      return;
+    }
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch("/api/reponseComment/create", {
+        method: "POST",
+        body: JSON.stringify({
+          id_comment: id,
+          text: textReponse,
+          id_utilisateur,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la création du commentaire");
+      }
+
+      const data = await response.json();
+      fetchCoursId();
+      setText("");
+      setError(null);
+      setSuccessMessage(
+        "Votre commentaire a été envoyé avec succès !",
+        data.message
+      );
+    } catch (error) {
+      setError(error.message);
+      setSuccessMessage(null);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="space-y-4">
-      {comments.map((comment, commentIndex) => (
-        <div key={commentIndex} className="border-b pb-2 mb-2">
+      {comments?.commentaires?.map((comment) => (
+        <div key={comment.id} className="border-b pb-2 mb-2">
           <div className="flex items-center">
             <img
-              src={comment.userImage}
+              src={
+                comment.utilisateur.photo
+                  ?.filter((image) => image?.isActif === true)
+                  ?.sort(
+                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                  )[0]?.url || "/images/user1.png"
+              }
               alt="Avatar"
               className="w-8 h-8 rounded-full mr-2"
             />
-            <span className="font-semibold">{comment.userName}</span>
-            <span className="text-gray-500 text-sm ml-2">{comment.date}</span>
+
+            <span className="font-semibold">
+              {comment.utilisateur.nom} {comment.utilisateur.prenom}
+            </span>
+            <span className="text-gray-500 text-sm ml-2">
+              {formatCreatedAt(comment.createdAt)}
+            </span>
           </div>
 
-          {editingCommentIndex === commentIndex ? (
+          {isEditing === comment.id ? (
             <input
               type="text"
-              value={editingText}
-              onChange={(e) => setEditingText(e.target.value)}
+              value={editingComment}
+              placeholder={`modifier à ${comment.text}...`}
+              onChange={(e) => setEditingComment(e.target.value)}
               className="border rounded-lg py-2 px-4 flex-grow"
+              disabled={loading}
             />
           ) : (
-            <p className="text-gray-700 mt-1">{comment.comment}</p>
+            <p className="text-gray-700 mt-1">{comment.text}</p>
           )}
 
           <div className="flex mt-2">
-            {editingCommentIndex === commentIndex ? (
+            {isEditing === comment.id ? (
               <button
+                type="button"
                 className="mr-2 text-green-500"
-                onClick={() => handleEditComment(commentIndex, editingText)}
+                onClick={() => {
+                  handleEditComment(comment.id);
+                  setIsEditing(false);
+                }}
+                disabled={loading}
               >
                 Enregistrer
               </button>
@@ -56,62 +156,58 @@ export default function CommentList({
               <>
                 <button
                   className="mr-2 text-blue-500"
-                  onClick={() => handleReply(commentIndex, comment.userName)}
+                  onClick={() => handleRepondToggle(comment.id)}
                 >
                   Répondre
                 </button>
                 <button
                   className="mr-2 text-yellow-500"
-                  onClick={() => {
-                    setEditingText(comment.comment);
-                    setEditingCommentIndex(commentIndex);
-                  }}
+                  onClick={() => handleModifier(comment.id)}
+                  disabled={loading}
                 >
                   Modifier
                 </button>
                 <button
+                  type="button"
                   className="mr-2 text-red-500"
-                  onClick={() => handleDeleteComment(commentIndex)}
+                  onClick={() => handleDeleteComment(comment.id)}
+                  disabled={loading}
                 >
-                  Supprimer
+                  {loading ? "Sup..." : "Supprimer"}
                 </button>
               </>
             )}
           </div>
 
           {/* Réponses */}
-          {comment.replies &&
-            comment.replies.map((reply, replyIndex) => (
+          {comment.reponses &&
+            comment.reponses.map((reponse) => (
               <ReplyItem
-                key={replyIndex}
-                reply={reply}
-                replyIndex={replyIndex}
-                commentIndex={commentIndex}
-                handleReply={handleReply}
-                handleEditReply={handleEditReply}
-                handleDeleteReply={handleDeleteReply}
-                editingReplyIndex={editingReplyIndex}
-                setEditingReplyIndex={setEditingReplyIndex}
-                editingText={editingText}
-                setEditingText={setEditingText}
+                key={reponse.id}
+                reponse={reponse}
+                setIsRepond={setIsRepond}
+                fetchCoursId={fetchCoursId}
               />
             ))}
 
           {/* Affichage de l'input pour ajouter une réponse */}
-          {replyToIndex === commentIndex && (
+          {isRepond === comment.id && (
             <div className="mt-2">
               <input
                 type="text"
                 className="border rounded-lg py-2 px-4 flex-grow"
-                placeholder="Répondre au commentaire..."
-                value={replyComment}
-                onChange={(e) => setReplyComment(e.target.value)}
+                placeholder={`Répondre à ${comment.utilisateur.nom}...`}
+                value={textReponse}
+                onChange={(e) => setTextReponse(e.target.value)}
               />
               <button
                 className="ml-2 bg-blue-600 text-white py-2 px-4 rounded-lg"
-                onClick={() => handleReplySubmit(commentIndex)}
+                onClick={() => {
+                  handleRepondre(comment.id);
+                  setIsRepond(false);
+                }}
               >
-                Envoyer
+                {loading ? "Envoi..." : "Envoyer"}
               </button>
             </div>
           )}

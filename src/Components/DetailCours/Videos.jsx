@@ -3,67 +3,34 @@ import VideoPlayer from "./Video/VideoPlayer";
 import CommentInput from "./Video/CommentInput";
 import CommentList from "./Video/CommentList";
 
-export default function Videos({
-  lesson,
-  comments,
-  handleCommentSubmit,
-  reactions,
-  handleReaction,
-  setNewComment,
-  newComment,
-  setReplyToIndex,
-  replyToIndex,
-  setReplyComment,
-  replyComment,
-  handleReplySubmit,
-  handleReply,
-  replyingToUser,
-  handleEditComment,
-  handleEditReply,
-  handleDeleteComment,
-  handleDeleteReply,
-  editingCommentIndex,
-  setEditingCommentIndex,
-  editingReplyIndex,
-  setEditingReplyIndex,
-  editingText,
-  setEditingText,
-}) {
+export default function Videos({ lessons, fetchCoursId }) {
   return (
     <div className="mt-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <h2 className="text-2xl font-semibold mb-4 text-gray-900">Vidéos</h2>
-      {lesson.videos && lesson.videos.length > 0 ? (
-        lesson.videos.map((video, index) => (
+      {lessons.modules.length > 0 ? (
+        lessons.modules.map((module, index) => (
           <div key={index}>
-            <VideoPlayer video={video} />
-            <CommentInput
-              newComment={newComment}
-              setNewComment={setNewComment}
-              handleCommentSubmit={handleCommentSubmit}
-            />
-            <CommentList
-              comments={comments}
-              reactions={reactions}
-              replyToIndex={replyToIndex}
-              setReplyComment={setReplyComment}
-              replyComment={replyComment}
-              handleReplySubmit={handleReplySubmit}
-              handleReply={handleReply}
-              handleEditComment={handleEditComment}
-              handleDeleteComment={handleDeleteComment}
-              setEditingCommentIndex={setEditingCommentIndex}
-              editingCommentIndex={editingCommentIndex}
-              editingText={editingText}
-              setEditingText={setEditingText}
-              handleEditReply={handleEditReply}
-              handleDeleteReply={handleDeleteReply}
-              editingReplyIndex={editingReplyIndex}
-              setEditingReplyIndex={setEditingReplyIndex}
-            />
+            <h2>Module : {module.nom}</h2>
+            {module.videos.length > 0 ? (
+              <ul>
+                {module.videos.map((video, i) => (
+                  <div key={index}>
+                    <VideoPlayer video={video} />
+                    <CommentInput
+                      comments={video}
+                      fetchCoursId={fetchCoursId}
+                    />
+                    <CommentList comments={video} fetchCoursId={fetchCoursId} />
+                  </div>
+                ))}
+              </ul>
+            ) : (
+              <p>Aucun fichier disponible pour ce module.</p>
+            )}
           </div>
         ))
       ) : (
-        <p className="text-gray-600">Aucune vidéo disponible.</p>
+        <p>Aucun module disponible.</p>
       )}
     </div>
   );
