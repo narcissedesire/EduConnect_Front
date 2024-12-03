@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GoPerson } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { Port } from "../Port";
 import { checkTokenExpiration } from "../Components/TokenExpire";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Login_etudiant() {
   const [email, setEmail] = useState("");
   const [mot_passe, setMot_passe] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { user, setLoading, loading } = useContext(AuthContext);
 
-  useEffect(() => {
-    checkTokenExpiration();
-  }, []);
+  if (user) {
+    navigate("/");
+    return;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,12 +24,9 @@ export default function Login_etudiant() {
       setError("Veuillez remplir tous les champs.");
       return;
     }
-
-    const existingToken = localStorage.getItem("token");
-    if (existingToken) {
+    if (user) {
+      console.log("Vous etes dejat connecter");
       navigate("/");
-      console.log(existingToken);
-      return;
     }
     try {
       const response = await fetch(`/api/auth/login`, {
@@ -42,15 +41,11 @@ export default function Login_etudiant() {
       }
 
       const data = await response.json();
-      console.log("Connexion réussie :", data);
 
-      // Vérifiez le message de succès
       if (data.status === "success") {
-        const expirationTime = new Date().getTime() + 12 * 60 * 60 * 1000;
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("tokenExpiration", expirationTime);
-
+        sessionStorage.setItem("token", data.token);
         navigate("/");
+        setLoading(false);
       } else {
         setError(data.message || "Erreur inconnue.");
       }

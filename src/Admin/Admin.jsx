@@ -1,209 +1,206 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import {
-  FaUserAlt,
-  FaChalkboardTeacher,
-  FaCheckCircle,
-  FaExclamationTriangle,
-  FaFileAlt,
+  FaUsers,
   FaChartLine,
+  FaTasks,
+  FaEnvelope,
+  FaCog,
 } from "react-icons/fa";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-import { Bar } from "react-chartjs-2";
-import "chart.js/auto";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-// Fonction pour simuler des données
-const fetchData = async () => {
-  return {
-    recentActivities: [
-      {
-        type: "Inscription",
-        details: "Nouvel étudiant inscrit",
-        date: "2024-10-01",
-      },
-      {
-        type: "Publication",
-        details: "Nouveau cours ajouté",
-        date: "2024-10-02",
-      },
-      {
-        type: "Devoir soumis",
-        details: "Devoir en attente de correction",
-        date: "2024-10-03",
-      },
-    ],
-    stats: {
-      totalUsers: 150,
-      totalTeachers: 20,
-      activeCourses: 12,
-      averageCompletionRate: 78,
-      overallSuccessRate: 85,
-    },
-    alerts: [
-      { message: "Cours en attente de validation" },
-      { message: "2 devoirs non corrigés" },
-      { message: "1 demande d’assistance en attente" },
-    ],
-  };
-};
-
-export default function Admin() {
-  const [data, setData] = useState({
-    recentActivities: [],
-    stats: {},
-    alerts: [],
-  });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadDashboardData = async () => {
-      setLoading(true);
-      const fetchedData = await fetchData();
-      setData(fetchedData);
-      setLoading(false);
-    };
-    loadDashboardData();
-  }, []);
-
-  if (loading)
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-200">
-        <p className="text-xl font-semibold">Chargement...</p>
-      </div>
-    );
-
-  // Données pour le graphique des taux de réussite et d'achèvement
-  const chartData = {
-    labels: ["Achèvement Moyen", "Réussite Globale"],
-    datasets: [
-      {
-        label: "Taux (%)",
-        data: [data.stats.averageCompletionRate, data.stats.overallSuccessRate],
-        backgroundColor: ["#4caf50", "#1e90ff"],
-        borderRadius: 8,
-      },
-    ],
-  };
-
+export default function Dashboard() {
   return (
-    <div className="p-6 bg-gradient-to-r from-blue-50 to-gray-100 min-h-screen">
-      <h1 className="text-4xl font-bold text-blue-700 mb-8 text-center">
-        Tableau de Bord Administrateur
-      </h1>
+    <div className="min-h-screen bg-gray-50 flex flex-col p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* Performances des étudiants */}
+        <div className="w-full p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold text-gray-800 mb-3">
+            Performances des étudiants
+          </h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart
+              data={[
+                { name: "Jan", uv: 50 },
+                { name: "Feb", uv: 70 },
+                { name: "Mar", uv: 90 },
+              ]}
+            >
+              <Line type="monotone" dataKey="uv" stroke="#4CAF50" />
+              <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
 
-      {/* Statistiques en Temps Réel */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <div className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4 transition-transform transform hover:scale-105">
-          <FaUserAlt className="text-blue-600 text-4xl" />
-          <div>
-            <p className="text-gray-500">Utilisateurs</p>
-            <p className="text-2xl font-bold">{data.stats.totalUsers}</p>
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4 transition-transform transform hover:scale-105">
-          <FaChalkboardTeacher className="text-yellow-600 text-4xl" />
-          <div>
-            <p className="text-gray-500">Enseignants</p>
-            <p className="text-2xl font-bold">{data.stats.totalTeachers}</p>
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4 transition-transform transform hover:scale-105">
-          <FaCheckCircle className="text-green-600 text-4xl" />
-          <div>
-            <p className="text-gray-500">Cours Actifs</p>
-            <p className="text-2xl font-bold">{data.stats.activeCourses}</p>
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
-          <div className="w-16">
-            <CircularProgressbar
-              value={data.stats.averageCompletionRate}
-              text={`${data.stats.averageCompletionRate}%`}
-              styles={buildStyles({
-                textSize: "18px",
-                pathColor: "#4caf50",
-                textColor: "#333",
-                trailColor: "#d6d6d6",
-              })}
+        {/* Cours Actifs */}
+        <div className="w-full p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold text-gray-800 mb-3">
+            Cours Actifs
+          </h3>
+          <div className="space-y-4">
+            <CourseProgress
+              course="Mathématiques"
+              progress={70}
+              link="/courses/math"
+            />
+            <CourseProgress
+              course="Physique"
+              progress={45}
+              link="/courses/physics"
             />
           </div>
-          <div className="ml-4">
-            <p className="text-gray-500">Achèvement Moyen</p>
+        </div>
+
+        {/* Messages récents */}
+        <div className="w-full p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold text-gray-800 mb-3">
+            <Link to="/messages" className="hover:text-blue-500">
+              Messages récents
+            </Link>
+          </h3>
+          <ul className="space-y-3">
+            <MessagePreview
+              user="Étudiant A"
+              message="J’ai une question sur le devoir 3."
+              link="/messages/etudiant-a"
+            />
+            <MessagePreview
+              user="Étudiant B"
+              message="Pouvez-vous revoir ma correction ?"
+              link="/messages/etudiant-b"
+            />
+          </ul>
+        </div>
+
+        {/* <div className="flex flex-wrap gap-6 justify-between mt-6"> */}
+        {/* Évaluations */}
+        <div className="w-full p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold text-gray-800 mb-3">
+            <Link to="/evaluations" className="hover:text-blue-500">
+              Évaluations en Cours
+            </Link>
+          </h3>
+          <div className="space-y-4">
+            <TaskStatus
+              task="Examen 1"
+              status="En attente"
+              link="/exam/examen-1"
+            />
+            <TaskStatus
+              task="Devoir 2"
+              status="En cours"
+              link="/exam/devoir-2"
+            />
           </div>
         </div>
-      </section>
 
-      {/* Graphique des Statistiques */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-blue-700 mb-4 text-center">
-          Statistiques des Taux de Réussite et d'Achèvement
-        </h2>
-        <div className="bg-white p-8 rounded-lg shadow-lg">
-          <Bar data={chartData} options={{ maintainAspectRatio: false }} />
-        </div>
-      </section>
-
-      {/* Activités Récentes avec Filtre */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-          Activités Récentes
-        </h2>
-        <div className="flex justify-end mb-4">
-          <input
-            type="text"
-            placeholder="Rechercher une activité..."
-            className="p-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-300"
-          />
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
-          {data.recentActivities.map((activity, index) => (
-            <div
-              key={index}
-              className="flex items-center space-x-4 border-b pb-4"
+        {/* Rapports analytiques */}
+        <div className="w-full p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold text-gray-800 mb-3">
+            Rapports Analytiques
+          </h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart
+              data={[
+                { name: "Jan", value: 60 },
+                { name: "Feb", value: 50 },
+                { name: "Mar", value: 80 },
+              ]}
             >
-              <FaFileAlt className="text-blue-600 text-2xl" />
-              <div>
-                <p className="font-bold">{activity.type}</p>
-                <p className="text-gray-500">{activity.details}</p>
-                <p className="text-sm text-gray-400">{activity.date}</p>
-              </div>
-            </div>
-          ))}
+              <Line type="monotone" dataKey="value" stroke="#1E90FF" />
+              <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
-      </section>
 
-      {/* Alertes et Rappels */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-          Alertes et Rappels
-        </h2>
-        <div className="bg-white p-6 rounded-lg shadow-md space-y-3">
-          {data.alerts.map((alert, index) => (
-            <div
-              key={index}
-              className="flex items-center space-x-3 text-red-600"
-            >
-              <FaExclamationTriangle className="text-xl" />
-              <p className="font-semibold">{alert.message}</p>
-            </div>
-          ))}
+        {/* Messagerie */}
+        <div className="w-full p-4 bg-white rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold text-gray-800 mb-3">
+            <Link to="/internal-messages" className="hover:text-blue-500">
+              Messagerie interne
+            </Link>
+          </h3>
+          <div className="space-y-4">
+            <MessageCount count={3} link="/messages/unread" />
+            <MessageCount count={8} link="/messages/all" />
+          </div>
         </div>
-      </section>
+      </div>
+    </div>
+  );
+}
 
-      {/* Rapports Hebdomadaires/Mensuels */}
-      <section>
-        <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-          Rapports de Performance
-        </h2>
-        <div className="flex space-x-4">
-          <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg shadow-lg font-semibold transition duration-300 transform hover:scale-105">
-            Voir les Rapports Hebdomadaires
-          </button>
-          <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg shadow-lg font-semibold transition duration-300 transform hover:scale-105">
-            Voir les Rapports Mensuels
-          </button>
+function CourseProgress({ course, progress, link }) {
+  return (
+    <div className="flex justify-between items-center">
+      <Link to={link} className="text-blue-500 hover:underline">
+        {course}
+      </Link>
+      <div className="flex items-center space-x-2">
+        <div className="w-32 bg-gray-200 h-2 rounded-full">
+          <div
+            className="h-2 bg-blue-500 rounded-full"
+            style={{ width: `${progress}%` }}
+          ></div>
         </div>
-      </section>
+        <span>{progress}%</span>
+      </div>
+    </div>
+  );
+}
+
+function MessagePreview({ user, message, link }) {
+  return (
+    <div className="flex items-center">
+      <FaEnvelope className="text-gray-500 mr-3" />
+      <div>
+        <Link to={link} className="font-semibold text-blue-500 hover:underline">
+          {user}
+        </Link>
+        <p className="text-sm text-gray-500">{message}</p>
+      </div>
+    </div>
+  );
+}
+
+function TaskStatus({ task, status, link }) {
+  const statusColors =
+    status === "En cours"
+      ? "text-yellow-500"
+      : status === "En attente"
+      ? "text-gray-500"
+      : "text-green-500";
+  return (
+    <div className="flex justify-between items-center">
+      <Link to={link} className="text-blue-500 hover:underline">
+        {task}
+      </Link>
+      <span className={`${statusColors} font-semibold`}>{status}</span>
+    </div>
+  );
+}
+
+function MessageCount({ count, link }) {
+  return (
+    <div className="flex justify-between items-center">
+      <span>Messages non lus</span>
+      <Link to={link} className="font-semibold text-blue-500 hover:underline">
+        {count}
+      </Link>
     </div>
   );
 }

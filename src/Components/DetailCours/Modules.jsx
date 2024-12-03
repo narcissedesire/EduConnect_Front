@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Modules({ lesson }) {
   return (
@@ -9,7 +10,8 @@ export default function Modules({ lesson }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {lesson.modules && lesson.modules.length > 0 ? (
           lesson.modules.map((module, index) => (
-            <div
+            <Link
+              to={`/admin/cours/module/${module.id}`}
               key={index}
               className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105"
             >
@@ -17,7 +19,7 @@ export default function Modules({ lesson }) {
                 {module.nom}
               </h3>
               <p className="text-gray-600">{module.description}</p>
-            </div>
+            </Link>
           ))
         ) : (
           <p className="text-gray-600">Aucun module disponible.</p>
