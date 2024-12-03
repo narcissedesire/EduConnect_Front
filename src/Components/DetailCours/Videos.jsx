@@ -3,7 +3,8 @@ import VideoPlayer from "./Video/VideoPlayer";
 import CommentInput from "./Video/CommentInput";
 import CommentList from "./Video/CommentList";
 
-export default function Videos({ lessons, fetchCoursId }) {
+export default function Videos({ lessons, fetchCoursId, formaVideo }) {
+  console.log(formaVideo);
   return (
     <div className="mt-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <h2 className="text-2xl font-semibold mb-4 text-gray-900">Vidéos</h2>
@@ -14,8 +15,15 @@ export default function Videos({ lessons, fetchCoursId }) {
             {module.videos.length > 0 ? (
               <ul>
                 {module.videos.map((video, i) => (
-                  <div key={index}>
-                    <VideoPlayer video={video} />
+                  <div
+                    key={index}
+                    className={
+                      formaVideo
+                        ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"
+                        : ""
+                    }
+                  >
+                    <VideoPlayer video={video} formaVideo={formaVideo} />
                     <CommentInput
                       comments={video}
                       fetchCoursId={fetchCoursId}

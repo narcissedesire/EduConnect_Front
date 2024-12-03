@@ -47,7 +47,7 @@ export default function Cours() {
 
   const fetchCategorie = async () => {
     try {
-      const response = await fetch(`${Port}/categorie`, {
+      const response = await fetch(`api/categorie`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

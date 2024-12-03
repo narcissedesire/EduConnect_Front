@@ -11,6 +11,11 @@ import {
   FaCog,
   FaQuestionCircle,
   FaSignOutAlt,
+  FaUsers,
+  FaTasks,
+  FaChartBar,
+  FaEnvelope,
+  FaAward,
 } from "react-icons/fa";
 
 export const LienNav = [
@@ -34,6 +39,31 @@ export const LinkSidebarProfil = [
     icon: <FaHome />,
   },
   { label: "test", href: "/profile/test", icon: <FaHome /> },
+];
+
+//Sidebare
+// Menu pour les enseignants
+export const teacherMenu = [
+  { label: "Tableau de bord", icon: <FaHome />, link: "/admin" },
+  { label: "Cours", icon: <FaBook />, link: "/admin/cours" },
+  { label: "Étudiants", icon: <FaUsers />, link: "/admin/etudiant" },
+  { label: "Évaluations", icon: <FaTasks />, link: "/admin/evaluation" },
+  { label: "Rapports", icon: <FaChartBar />, link: "/admin/report" },
+  { label: "Messagerie", icon: <FaEnvelope />, link: "/admin/message" },
+  { label: "Paramètres", icon: <FaCog />, link: "/admin/settings" },
+  { label: "Déconnexion", icon: <FaSignOutAlt />, link: "/logout" },
+];
+
+// Menu pour les étudiants
+export const studentMenu = [
+  { label: "Tableau de bord", icon: <FaHome />, link: "/student/dashboard" },
+  { label: "Mes cours", icon: <FaBook />, link: "/student/courses" },
+  { label: "Évaluations", icon: <FaClipboard />, link: "/student/exams" },
+  { label: "Progression", icon: <FaChartBar />, link: "/student/progress" },
+  { label: "Messagerie", icon: <FaEnvelope />, link: "/student/messages" },
+  { label: "Certificats", icon: <FaAward />, link: "/student/certificates" },
+  { label: "Paramètres", icon: <FaCog />, link: "/student/settings" },
+  { label: "Déconnexion", icon: <FaSignOutAlt />, link: "/logout" },
 ];
 
 // Faut data cetification et badge

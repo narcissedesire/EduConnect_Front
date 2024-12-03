@@ -2,15 +2,27 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
 export const formatCreatedAt = (createdAt) => {
-  const now = new Date();
   const createdDate = new Date(createdAt);
 
-  const differenceInMinutes = Math.floor((now - createdDate) / (1000 * 60));
+  // Vérifier si createdDate est une date valide
+  if (isNaN(createdDate)) {
+    return "À l'instant";
+  }
+
+  const now = new Date();
+  const differenceInSeconds = Math.floor((now - createdDate) / 1000);
+  const differenceInMinutes = Math.floor(differenceInSeconds / 60);
   const differenceInHours = Math.floor(differenceInMinutes / 60);
   const differenceInDays = Math.floor(differenceInMinutes / 1440);
   const differenceInYears = Math.floor(differenceInDays / 365);
 
-  if (differenceInMinutes < 60) {
+  if (differenceInSeconds < 10) {
+    return "À l'instant";
+  } else if (differenceInSeconds < 60) {
+    return `${differenceInSeconds} seconde${
+      differenceInSeconds > 1 ? "s" : ""
+    }`;
+  } else if (differenceInMinutes < 60) {
     return `${differenceInMinutes} minute${differenceInMinutes > 1 ? "s" : ""}`;
   } else if (differenceInHours < 24) {
     return `${differenceInHours} heure${differenceInHours > 1 ? "s" : ""}`;

@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LienNav } from "./Data";
 import logo from "/images/logo.png";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
+  const { user, etudiantConnecter, enseignatConnecter } =
+    useContext(AuthContext);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -90,12 +93,32 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
-          <Link
-            to="/login-etudiant"
-            className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
-          >
-            Connexion
-          </Link>
+          <div className="flex items-center gap-2">
+            {!user && (
+              <Link
+                to="/login-etudiant"
+                className="block px-3 py-2 bg-primary rounded-[10px] hover:bg-primary/75 text-secondary"
+              >
+                Connexion
+              </Link>
+            )}
+            {etudiantConnecter && (
+              <Link
+                to="/login-etudiant"
+                className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
+              >
+                Profile etudiant
+              </Link>
+            )}
+            {enseignatConnecter && (
+              <Link
+                to="/login-etudiant"
+                className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
+              >
+                Profil enseignat
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 
@@ -116,13 +139,32 @@ const Navbar = () => {
             {item.label}
           </Link>
         ))}
-        <Link
-          to="/login-etudiant"
-          className="block px-4 py-2 bg-primary hover:bg-primary/75 text-secondary text-center"
-          onClick={closeMenu}
-        >
-          Connexion
-        </Link>
+        <div className="flex flex-col items-center gap-2">
+          {!user && (
+            <Link
+              to="/login-etudiant"
+              className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
+            >
+              Connexion
+            </Link>
+          )}
+          {etudiantConnecter && (
+            <Link
+              to="/login-etudiant"
+              className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
+            >
+              Profile etudiant
+            </Link>
+          )}
+          {enseignatConnecter && (
+            <Link
+              to="/login-etudiant"
+              className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
+            >
+              Profil enseignat
+            </Link>
+          )}
+        </div>
       </div>
     </nav>
   );

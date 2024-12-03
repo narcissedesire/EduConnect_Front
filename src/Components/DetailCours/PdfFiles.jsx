@@ -1,49 +1,30 @@
 import React from "react";
+import { Port } from "../../Port";
 
-export default function PdfFiles({ lesson }) {
+export default function PdfFiles({ fichiers }) {
   return (
-    <div className="mt-10 container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="mt-7">
       <h2 className="text-2xl font-semibold mb-4 text-gray-900">
         Fichiers PDF
       </h2>
-      {lesson.modules.length > 0 ? (
-        lesson.modules.map((module, index) => (
-          <div key={index}>
-            <h2>Module : {module.nom}</h2>
-            {module.fichiers.length > 0 ? (
-              <ul>
-                {module.fichiers.map((fichier, i) => (
-                  <li key={i}>
-                    <a
-                      href={fichier.contenu}
-                      className="text-blue-600 hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Télécharger {fichier.nom.split("/").pop()}.pdf
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Aucun fichier disponible pour ce module.</p>
-            )}
-          </div>
-        ))
+      {fichiers?.length > 0 ? (
+        <ul className="list-disc ml-5">
+          {fichiers.map((fichier) => (
+            <li key={fichier.id} className="mb-2">
+              <a
+                href={`${Port}/${fichier.liens}`}
+                className="text-blue-600 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {fichier.nom} {/* Affiche le nom du fichier */}
+              </a>
+            </li>
+          ))}
+        </ul>
       ) : (
-        <p>Aucun module disponible.</p>
+        <p>Aucun fichier disponible pour ce module.</p>
       )}
     </div>
   );
-}
-
-{
-  /* <a
-  href={pdf}
-  className="text-blue-600 hover:underline"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  Télécharger {pdf.split("/").pop()}
-</a>; */
 }

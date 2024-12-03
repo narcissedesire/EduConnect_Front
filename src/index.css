@@ -88,3 +88,15 @@
 .slick-dots li.slick-active button:before {
   color: rgba(30, 144, 255, 1); /* Bleu plein pour l'élément actif */
 }
+
+body {
+  overflow-x: hidden; /* Éviter le défilement horizontal */
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.min-height {
+  min-height: calc(100vh - 80px);
+}
