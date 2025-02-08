@@ -49,9 +49,6 @@ export default function Cours() {
     try {
       const response = await fetch(`api/categorie`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
       if (!response.ok) {
         throw new Error("Erreur lors de la récupération des données");
