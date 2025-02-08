@@ -16,7 +16,7 @@ import Gestion from "./Admin/Gestion";
 // import Cours from "./Admin/Cours";
 import Cours from "./Client/Cours";
 import CourseDetail from "./Client/CourseDetail";
-import Profile from "./Client/Profile";
+// import Profile from "./Client/Profile";
 import Sidebar from "./Components/Profile/Sidebar ";
 import Dashboard from "./Components/Profile/Dashboard ";
 import StudentProfile from "./Components/Profile/Dash";
