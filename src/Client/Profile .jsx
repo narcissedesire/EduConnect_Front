@@ -1,5 +1,3 @@
-// Profile.js
-
 import React from "react";
 import {
   FaUser,
@@ -11,12 +9,10 @@ import {
 import Sidebar from "../Components/Profile/Sidebar ";
 import Dashboard from "../Components/Profile/Dashboard ";
 
-const Profile = () => {
+export default function Profile() {
   return (
     <div className=" mt-20">
       <Dashboard />
     </div>
   );
 };
-
-export default Profile;
