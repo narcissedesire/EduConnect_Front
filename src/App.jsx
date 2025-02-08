@@ -10,10 +10,8 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Admin from "./Admin/Admin";
 import Home from "./Client/Home";
-import AdminFooter from "./Admin/AdminFooter";
 import About from "./Client/About";
 import Contact from "./Client/Contact";
-import SideBar from "./Admin/SideBar";
 import Gestion from "./Admin/Gestion";
 // import Cours from "./Admin/Cours";
 import Cours from "./Client/Cours";
@@ -27,7 +25,7 @@ import Settings from "./Components/Profile/Parametre";
 import CertificationBadge from "./Components/Profile/CertificationBadge";
 import Login from "./Client/Login";
 import Login_etudiant from "./Client/Login_etudiant";
-import Header from "./Admin/Header ";
+import Header from "./Components/Admin/Header ";
 import CoursAdmin from "./Admin/Cours";
 import CourseDetailAdmin from "./Admin/CourseDetailAdmin";
 import Students from "./Admin/Etudiant";
@@ -41,6 +39,10 @@ import Messager from "./Admin/Messager";
 import ChatOnline from "./Components/Messages/ChatOnline";
 import Conversations from "./Components/Messages/Conversations";
 import DetailModule from "./Components/Admin/Cours/DetailModule";
+import SidebarEnseignant from "./Components/Admin/SideBar";
+import AdminFooter from "./Components/Admin/AdminFooter";
+import DetailModuleEtudiant from "./Components/DetailCours/DetailModuleEtudiant";
+import NotFound from "./Components/NotFound";
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -85,7 +87,7 @@ const App = () => {
               path="/admin"
               element={
                 <div className="flex">
-                  <SideBar
+                  <SidebarEnseignant
                     role={role}
                     logo={logo}
                     isSidebarOpen={isSidebarOpen}
@@ -190,6 +192,10 @@ const App = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/cours" element={<Cours />} />
               <Route path="/cours/:id" element={<CourseDetail />} />
+              <Route
+                path="/cours/module/:id"
+                element={<DetailModuleEtudiant />}
+              />
             </Route>
 
             <Route
@@ -214,6 +220,7 @@ const App = () => {
               />
             </Route>
             <Route path="/parametre" element={<Settings />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </Router>
