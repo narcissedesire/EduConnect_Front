@@ -7,10 +7,7 @@ import {
   FaHome,
   FaBook,
   FaClipboard,
-  FaUser,
   FaCog,
-  FaQuestionCircle,
-  FaSignOutAlt,
   FaUsers,
   FaTasks,
   FaChartBar,
@@ -51,7 +48,6 @@ export const teacherMenu = [
   { label: "Rapports", icon: <FaChartBar />, link: "/admin/report" },
   { label: "Messagerie", icon: <FaEnvelope />, link: "/admin/message" },
   { label: "Paramètres", icon: <FaCog />, link: "/admin/settings" },
-  { label: "Déconnexion", icon: <FaSignOutAlt />, link: "/logout" },
 ];
 
 // Menu pour les étudiants
@@ -63,7 +59,6 @@ export const studentMenu = [
   { label: "Messagerie", icon: <FaEnvelope />, link: "/student/messages" },
   { label: "Certificats", icon: <FaAward />, link: "/student/certificates" },
   { label: "Paramètres", icon: <FaCog />, link: "/student/settings" },
-  { label: "Déconnexion", icon: <FaSignOutAlt />, link: "/logout" },
 ];
 
 // Faut data cetification et badge

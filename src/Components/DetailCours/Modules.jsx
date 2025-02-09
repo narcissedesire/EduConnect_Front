@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Modules({ lesson }) {
+  const { user } = useContext(AuthContext);
+  const [lien, setLien] = useState("");
+  useEffect(() => {
+    if (user.role === "etudiant") {
+      setLien("cours/module");
+    } else {
+      setLien("admin/cours/module");
+    }
+  }, [user]);
   return (
     <div className="mt-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <h2 className="text-2xl font-semibold mb-4 text-gray-900">
@@ -11,7 +21,7 @@ export default function Modules({ lesson }) {
         {lesson.modules && lesson.modules.length > 0 ? (
           lesson.modules.map((module, index) => (
             <Link
-              to={`/admin/cours/module/${module.id}`}
+              to={`/${lien}/${module.id}`}
               key={index}
               className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105"
             >

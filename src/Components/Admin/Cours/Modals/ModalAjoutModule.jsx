@@ -31,6 +31,7 @@ export default function ModalAjoutModule({
       }
 
       const data = await response.json();
+
       setNewModule({ nom: "", description: "" });
 
       onAddModule();

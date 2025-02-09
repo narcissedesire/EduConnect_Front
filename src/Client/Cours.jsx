@@ -3,7 +3,6 @@ import SearchBar from "../Components/Cours/SearchBar";
 import FilterBar from "../Components/Cours/FilterBar";
 import Pagination from "../Components/Cours/Pagination";
 import LessonCard from "../Components/Cours/LessonCard";
-import { Port } from "../Port";
 import { checkTokenExpiration } from "../Components/TokenExpire";
 
 export default function Cours() {
@@ -22,7 +21,7 @@ export default function Cours() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const lessonsPerPage = 2;
+  const lessonsPerPage = 3;
 
   const suggestionRef = useRef(null);
   const inputRef = useRef(null);

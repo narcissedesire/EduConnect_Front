@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import ActionButtons from "./ActionButtons";
 
 const CourseList = ({ courses, fetchCours, categories }) => {
@@ -33,6 +32,7 @@ const CourseList = ({ courses, fetchCours, categories }) => {
                 className="border-t hover:bg-gray-100 transition-colors"
               >
                 <td className="py-3 px-4">{cour.titre}</td>
+
                 <td className="py-3 px-4">{cour.description}</td>
                 <td className="py-3 px-4">{cour.categorie?.label}</td>
                 <td className="py-3 px-4">{cour.modules?.length}</td>

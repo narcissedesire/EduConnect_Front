@@ -31,7 +31,7 @@ export default function AuthProvider({ children }) {
   const logout = () => {
     setUser(null);
     sessionStorage.removeItem("token");
-    window.location.href = "/login";
+    window.location.href = "/login-etudiant";
   };
 
   const contextValue = {

@@ -28,7 +28,10 @@ export default function CoursAdmin() {
       }
 
       const data = await response.json();
+<<<<<<< HEAD
+=======
       console.log("Données récupérées:", data);
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
 
       if (data?.cours && data.cours.length > 0) {
         const coursData = data.cours[0]?.cours || [];
@@ -66,7 +69,11 @@ export default function CoursAdmin() {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
+<<<<<<< HEAD
+  const coursesPerPage = 3;
+=======
   const coursesPerPage = 2;
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
   const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
   const currentCourses = filteredCourses.slice(
     (currentPage - 1) * coursesPerPage,

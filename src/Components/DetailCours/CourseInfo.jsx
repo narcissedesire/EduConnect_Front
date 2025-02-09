@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaClock, FaCheckCircle, FaBookOpen } from "react-icons/fa";
 import fond_hero from "/images/fond_hero.jpg";
 import ModalInscription from "./ModalInscription";
-import { jwtDecode } from "jwt-decode";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function CourseInfo({
   lesson,
@@ -11,11 +11,8 @@ export default function CourseInfo({
   totalModules,
   isInscrit,
 }) {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setUser(user);
-  }, []);
+  const { user } = useContext(AuthContext);
+
   const inscriptions = lesson?.inscriptions;
 
   const nombreEtudiants = inscriptions

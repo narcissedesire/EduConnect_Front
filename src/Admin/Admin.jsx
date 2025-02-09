@@ -1,5 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
+import { FaEnvelope } from "react-icons/fa";
+import {
+=======
 import {
   FaUsers,
   FaChartLine,
@@ -8,6 +12,7 @@ import {
   FaCog,
 } from "react-icons/fa";
 import {
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
   LineChart,
   Line,
   CartesianGrid,

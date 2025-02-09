@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { calculateProgression, formatCreatedAt } from "../FonctionUtile";
+import { Port } from "../../Port";
 
 export default function LessonCard({ lessons }) {
   const totalDuration = lessons.modules?.reduce((total, module) => {
@@ -14,8 +15,12 @@ export default function LessonCard({ lessons }) {
       <Link to={`/cours/${lessons.id}`}>
         <img
           className="w-full h-48 object-cover"
-          src="images/fond_hero.jpg"
-          alt="Image de couverture du cours"
+          src={
+            lessons.photo
+              ? Port + "/ImagesCours/" + lessons.photo.nom
+              : "images/fond_hero.jpg"
+          }
+          alt={lessons.photo ? lessons.photo.nom : "Image par defaut"}
         />
         <div className="p-6">
           <h3 className="text-2xl font-semibold text-gray-800 mb-2">

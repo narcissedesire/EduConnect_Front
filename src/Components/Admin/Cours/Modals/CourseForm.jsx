@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export default function CourseForm({ setShowForm, categories, fetchCours }) {
   const userConnect = JSON.parse(localStorage.getItem("user"));
@@ -85,6 +85,7 @@ export default function CourseForm({ setShowForm, categories, fetchCours }) {
             )}
           </select>
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Description</label>
           <textarea

@@ -8,7 +8,7 @@ const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
-  const { user, etudiantConnecter, enseignatConnecter } =
+  const { user, etudiantConnecter, enseignantConnecter, logout } =
     useContext(AuthContext);
 
   const toggleMenu = () => {
@@ -107,16 +107,32 @@ const Navbar = () => {
                 to="/login-etudiant"
                 className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
               >
-                Profile etudiant
+                <img
+                  src={
+                    user.photo
+                      ? Port + "/photoUsers/" + user.photo.nom
+                      : "/images/logo.png"
+                  }
+                  alt="User Avatar"
+                  className="h-12 w-12 rounded-full border-2 border-blue-500"
+                />
               </Link>
             )}
-            {enseignatConnecter && (
+            {enseignantConnecter && (
               <Link
-                to="/login-etudiant"
+                to="/admin"
                 className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
               >
                 Profil enseignat
               </Link>
+            )}
+            {user && (
+              <button
+                onClick={logout}
+                className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
+              >
+                Deconnection
+              </button>
             )}
           </div>
         </div>
@@ -156,13 +172,21 @@ const Navbar = () => {
               Profile etudiant
             </Link>
           )}
-          {enseignatConnecter && (
+          {enseignantConnecter && (
             <Link
               to="/login-etudiant"
               className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
             >
               Profil enseignat
             </Link>
+          )}
+          {user && (
+            <button
+              onClick={logout}
+              className="block px-3 py-2 rounded bg-primary hover:bg-primary/75 text-secondary"
+            >
+              Deconnection
+            </button>
           )}
         </div>
       </div>
