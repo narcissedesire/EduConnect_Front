@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Modules({ lesson }) {
+  const { user } = useContext(AuthContext);
+  const [lien, setLien] = useState("");
+  useEffect(() => {
+    if (user.role === "etudiant") {
+      setLien("cours/module");
+    } else {
+      setLien("admin/cours/module");
+    }
+  }, [user]);
   return (
     <div className="mt-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <h2 className="text-2xl font-semibold mb-4 text-gray-900">
@@ -9,7 +20,8 @@ export default function Modules({ lesson }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {lesson.modules && lesson.modules.length > 0 ? (
           lesson.modules.map((module, index) => (
-            <div
+            <Link
+              to={`/${lien}/${module.id}`}
               key={index}
               className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105"
             >
@@ -17,7 +29,7 @@ export default function Modules({ lesson }) {
                 {module.nom}
               </h3>
               <p className="text-gray-600">{module.description}</p>
-            </div>
+            </Link>
           ))
         ) : (
           <p className="text-gray-600">Aucun module disponible.</p>

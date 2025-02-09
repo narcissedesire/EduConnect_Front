@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 // import { lessonsData } from "../Components/Data";
 import CourseInfo from "../Components/DetailCours/CourseInfo";
@@ -6,13 +6,15 @@ import Modules from "../Components/DetailCours/Modules";
 import PdfFiles from "../Components/DetailCours/PdfFiles";
 import Videos from "../Components/DetailCours/Videos";
 import CommentSection from "../Components/DetailCours/CommentSection";
-// import { checkTokenExpiration } from "../Components/TokenExpire";
+import { AuthContext } from "../context/AuthContext";
 
 export default function CourseDetail() {
   const [detailCours, setDetailCours] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isInscrit, setIsInscrit] = useState(null);
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
 
   const fetchCoursId = async () => {
     try {
@@ -23,17 +25,27 @@ export default function CourseDetail() {
         throw new Error("Erreur lors de la récupération des données");
       }
       const data = await response.json();
+
       setDetailCours(data);
+
+      if (user && user.role === "etudiant" && data.cours.inscriptions) {
+        const inscrit = data.cours.inscriptions.some(
+          (inscription) => inscription.etudiant.id_utilisateur === user.id
+        );
+        setIsInscrit(inscrit);
+      }
     } catch (error) {
+      console.error("Erreur :", error.message);
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
-
   useEffect(() => {
-    fetchCoursId();
-  }, [id]);
+    if (user) {
+      fetchCoursId();
+    }
+  }, [user]);
 
   if (loading) {
     return <div>Chargement des données...</div>;
@@ -86,12 +98,14 @@ export default function CourseDetail() {
         progress={progress}
         completedModules={completedModules}
         totalModules={totalModules}
+        isInscrit={isInscrit}
       />
-      <Modules lesson={detailCours.cours} />
-      <PdfFiles lesson={detailCours.cours} />
-      <Videos lessons={detailCours.cours} fetchCoursId={fetchCoursId} />
-      {/* Section des avis */}
-      <CommentSection lesson={detailCours.cours} />
+      {isInscrit && (
+        <>
+          <Modules lesson={detailCours.cours} />
+          <CommentSection lesson={detailCours.cours} />
+        </>
+      )}
     </div>
   );
 }
