@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import PdfFiles from "../../DetailCours/PdfFiles";
 import Videos from "../../../Admin/Videos";
 import ModalMofifieModule from "./Modals/ModalMofifieModule";
-import ModalAddFile from "./Modals/modalAddFile";
-import ModaleAddVideo from "./Modals/modaleAddVideo";
+import ModalAddFile from "./Modals/ModalAddFile";
+import ModaleAddVideo from "./Modals/ModaleAddVideo";
 
 export default function DetailModule() {
   const [module, setModule] = useState(null);
