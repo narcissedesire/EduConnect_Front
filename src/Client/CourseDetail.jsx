@@ -3,18 +3,27 @@ import { useParams } from "react-router-dom";
 // import { lessonsData } from "../Components/Data";
 import CourseInfo from "../Components/DetailCours/CourseInfo";
 import Modules from "../Components/DetailCours/Modules";
-import PdfFiles from "../Components/DetailCours/PdfFiles";
-import Videos from "../Components/DetailCours/Videos";
+// import PdfFiles from "../Components/DetailCours/PdfFiles";
+// import Videos from "../Components/DetailCours/Videos";
 import CommentSection from "../Components/DetailCours/CommentSection";
 import { AuthContext } from "../context/AuthContext";
+// import { checkTokenExpiration } from "../Components/TokenExpire";
 
 export default function CourseDetail() {
+  // const { test } = useContext(AuthContext);
+  // console.log("test fotsiny : ", test);
+
   const [detailCours, setDetailCours] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isInscrit, setIsInscrit] = useState(null);
+
+  const [isInscrit, setIsInscrit] = useState("");
   const { id } = useParams();
-  const { user } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setUser(user);
+  }, []);
 
   const fetchCoursId = async () => {
     try {

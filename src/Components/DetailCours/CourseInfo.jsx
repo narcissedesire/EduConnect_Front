@@ -12,6 +12,7 @@ export default function CourseInfo({
   isInscrit,
 }) {
   const { user } = useContext(AuthContext);
+
   const inscriptions = lesson?.inscriptions;
 
   const nombreEtudiants = inscriptions

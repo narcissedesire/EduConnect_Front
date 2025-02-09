@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import ActionButtons from "./ActionButtons";
-import { Port } from "../../../Port";
 
 const CourseList = ({ courses, fetchCours, categories }) => {
   return (
@@ -10,9 +8,6 @@ const CourseList = ({ courses, fetchCours, categories }) => {
           <tr>
             <th className="py-3 px-4 text-left text-gray-600 font-semibold">
               Titre
-            </th>
-            <th className="py-3 px-4 text-left text-gray-600 font-semibold">
-              Photo
             </th>
             <th className="py-3 px-4 text-left text-gray-600 font-semibold">
               Description
@@ -37,20 +32,8 @@ const CourseList = ({ courses, fetchCours, categories }) => {
                 className="border-t hover:bg-gray-100 transition-colors"
               >
                 <td className="py-3 px-4">{cour.titre}</td>
-                <td className="py-3 px-4">
-                  <img
-                    className="w-12 h-auto object-cover"
-                    src={
-                      cour.photo
-                        ? Port + "/ImagesCours/" + cour.photo.nom
-                        : "/images/fond_hero.jpg"
-                    }
-                    alt={cour.photo ? cour.photo.nom : "Image par defaut"}
-                  />
-                </td>
-                <td className="py-3 px-4 line-clamp-1 overflow-hidden">
-                  {cour.description}
-                </td>
+
+                <td className="py-3 px-4">{cour.description}</td>
                 <td className="py-3 px-4">{cour.categorie?.label}</td>
                 <td className="py-3 px-4">{cour.modules?.length}</td>
                 <td className="py-3 px-4 text-center">

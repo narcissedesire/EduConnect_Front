@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+=======
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
 
 export default function Students() {
   const [students, setStudents] = useState([]);
@@ -8,23 +13,35 @@ export default function Students() {
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
   const studentsPerPage = 5; // Nombre d'étudiants par page
+<<<<<<< HEAD
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = useContext(AuthContext);
+=======
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
 
   const fetchStudents = async () => {
     try {
       const response = await fetch(`/api/etudiant/${user.id}`, {
         method: "GET",
       });
+<<<<<<< HEAD
       console.log(response);
+=======
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
 
       if (!response.ok) {
         throw new Error("Erreur lors du chargement des étudiants.");
       }
 
       const data = await response.json();
+<<<<<<< HEAD
       console.log(data);
+=======
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
       const formattedData = data.data.map((etudiant) => ({
         id: etudiant.id,
         name: `${etudiant.utilisateur.nom} ${etudiant.utilisateur.prenom}`,

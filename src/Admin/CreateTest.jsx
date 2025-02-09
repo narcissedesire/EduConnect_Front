@@ -24,7 +24,10 @@ export default function CreateTest() {
       return;
     }
     setOptions((prev) => [...prev, correctOption]);
+<<<<<<< HEAD
     setCorrectAnswer(correctOption);
+=======
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
     setCorrectOption("");
     setError("");
   };
@@ -51,10 +54,13 @@ export default function CreateTest() {
       setError("Veuillez définir la bonne réponse pour la question QCM.");
       return;
     }
+<<<<<<< HEAD
     if (questionType === "vrai/faux" && !correctAnswer) {
       setError("Veuillez définir la bonne réponse pour la question vrai/faux.");
       return;
     }
+=======
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
     if (questionType === "math" && !mathAnswer) {
       setError("Veuillez définir la bonne réponse mathématique.");
       return;
@@ -79,9 +85,12 @@ export default function CreateTest() {
     setQuestionScore(1);
     setError("");
   };
+<<<<<<< HEAD
   console.log(questions);
   console.log(options);
   console.log(correctAnswer);
+=======
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
 
   // Supprimer une question
   const handleDeleteQuestion = (id) => {
@@ -164,7 +173,11 @@ export default function CreateTest() {
           </div>
         )}
 
+<<<<<<< HEAD
         {/* Réponse correcte pour QCM */}
+=======
+        {/* Réponse correcte pour QCM ou Vrai/Faux */}
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
         {questionType === "QCM" && (
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">
@@ -184,6 +197,7 @@ export default function CreateTest() {
           </div>
         )}
 
+<<<<<<< HEAD
         {/* Réponse correcte pour Vrai/Faux */}
         {questionType === "vrai/faux" && (
           <div className="mb-4">
@@ -201,6 +215,8 @@ export default function CreateTest() {
           </div>
         )}
 
+=======
+>>>>>>> 43782f211814fc1f1c5fa758825db6ea406efb73
         {/* Réponse correcte pour Mathématique */}
         {questionType === "math" && (
           <div className="mb-4">

@@ -1,11 +1,7 @@
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-
-export const SidebarItem = ({ icon, label, link, isSidebarOpen, logout }) => {
+export const SidebarItem = ({ icon, label, link, isSidebarOpen }) => {
   return (
     <a
       href={link}
-      onClick={logout}
       className={`flex items-center space-x-4  rounded-lg transition-all duration-200 ${
         isSidebarOpen ? "hover:bg-blue-600 p-3" : "px-3 py-1"
       } hover:scale-105 cursor-pointer group`}

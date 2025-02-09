@@ -36,7 +36,7 @@ export default function DetailModule() {
   if (!module) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Pas de module
+        Chargement...
       </div>
     );
   }
@@ -74,6 +74,7 @@ export default function DetailModule() {
       <PdfFiles fichiers={module.fichiers} />
       <Videos videos={module.videos} />
 
+      {/* Modales conditionnelles */}
       {isModalOpen === "modifier" && (
         <ModalMofifieModule
           module={module}

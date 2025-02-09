@@ -31,12 +31,11 @@ export default function ModalAjoutModule({
       }
 
       const data = await response.json();
-      if (data.status === "success") {
-        setNewModule({ nom: "", description: "" });
 
-        onAddModule();
-        setIsModalOpen(false);
-      }
+      setNewModule({ nom: "", description: "" });
+
+      onAddModule();
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Erreur :", error.message);
     }

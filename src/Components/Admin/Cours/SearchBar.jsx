@@ -19,9 +19,9 @@ const SearchBar = ({ searchTerm, onSearch, fetchCours, categories }) => {
       </div>
       <button
         onClick={() => setShowForm(true)}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center flex-nowrap"
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center"
       >
-        <FaPlus className="mr-2" /> Créer
+        <FaPlus className="mr-2" /> Créer un cours
       </button>
 
       {showForm && (

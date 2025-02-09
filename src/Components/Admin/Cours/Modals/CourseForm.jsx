@@ -1,38 +1,32 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../../context/AuthContext";
-import { Port } from "../../../../Port";
+import React, { useState } from "react";
 
 export default function CourseForm({ setShowForm, categories, fetchCours }) {
-  const { user } = useContext(AuthContext);
+  const userConnect = JSON.parse(localStorage.getItem("user"));
 
-  const [titre, setTitre] = useState("");
-  const [description, setDescription] = useState("");
-  const [categorieId, setCategorieId] = useState("");
-  const [photo, setPhoto] = useState(null);
+  const [formData, setFormData] = useState({
+    titre: "",
+    description: "",
+    categorieId: "",
+  });
 
-  const handleFileChange = (e) => {
-    setPhoto(e.target.files[0]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("titre", titre);
-    formData.append("description", description);
-    formData.append("categorieId", categorieId);
-    formData.append("file", photo);
-    formData.append("id_utilisateur", user.id);
-
-    if (!user || !user.id) {
+    if (!userConnect || !userConnect.id) {
       console.error("Utilisateur non connecté. Veuillez vous connecter.");
       return;
     }
 
     try {
-      const response = await fetch(`${Port}/createPhoto`, {
+      const response = await fetch(`/api/cours/create`, {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, id_utilisateur: userConnect.id }),
       });
       if (!response.ok) {
         console.error(response.message);
@@ -45,6 +39,8 @@ export default function CourseForm({ setShowForm, categories, fetchCours }) {
       console.log("Erreur lors de la création :", error);
     }
   };
+
+  console.log("Catégories chargées :", categories);
 
   return (
     <div
@@ -62,8 +58,8 @@ export default function CourseForm({ setShowForm, categories, fetchCours }) {
           <input
             type="text"
             name="titre"
-            value={titre}
-            onChange={(e) => setTitre(e.target.value)}
+            value={formData.titre}
+            onChange={handleChange}
             required
             className="w-full px-3 py-2 border rounded-lg"
           />
@@ -72,8 +68,8 @@ export default function CourseForm({ setShowForm, categories, fetchCours }) {
           <label className="block text-gray-700 mb-2">Catégorie</label>
           <select
             name="categorieId"
-            value={categorieId}
-            onChange={(e) => setCategorieId(e.target.value)}
+            value={formData.categorieId}
+            onChange={handleChange}
             required
             className="w-full px-3 py-2 border rounded-lg"
           >
@@ -89,21 +85,13 @@ export default function CourseForm({ setShowForm, categories, fetchCours }) {
             )}
           </select>
         </div>
-        <div className="mt-4">
-          <label className="block mb-2">Choisir un fichier</label>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
-          />
-        </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Description</label>
           <textarea
             name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={formData.description}
+            onChange={handleChange}
             required
             className="w-full px-3 py-2 border rounded-lg"
           />
