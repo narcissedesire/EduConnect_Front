@@ -1,0 +1,16 @@
+name = "edu-connect"
+type = "javascript"  # ou "webpack" selon ton setup
+
+account_id = "3a7f9832e5ec8abbc1770dad0d2d96c1"
+workers_dev = true
+route = ""
+zone_id = ""
+
+[build]
+command = "npm install && npm run build"
+upload.format = "service-worker"
+upload.dir = "build"
+
+[env.production]
+name = "edu-connect-dev"
+route = "edu-connect.narcissedesire5.workers.dev"
