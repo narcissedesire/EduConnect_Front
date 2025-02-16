@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import SearchBar from "../Components/Cours/SearchBar";
 import FilterBar from "../Components/Cours/FilterBar";
 import Pagination from "../Components/Cours/Pagination";
 import LessonCard from "../Components/Cours/LessonCard";
 import { checkTokenExpiration } from "../Components/TokenExpire";
+// import Loading from "../Components/Loading/Loading";
+// import AuthProvider from "../context/AuthContext";
 
 export default function Cours() {
   useEffect(() => {
@@ -11,7 +13,8 @@ export default function Cours() {
   });
 
   const sortOptions = ["Tous", "recent"];
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
+  // const { loading, setLoading } = useContext(AuthProvider);
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
   const [dataCours, setDataCours] = useState([]);
@@ -37,10 +40,10 @@ export default function Cours() {
       }
       const data = await response.json();
       setDataCours(data.cours);
-      setLoading(false);
+      // setLoading(false);
     } catch (error) {
       setError(error.message);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -64,7 +67,6 @@ export default function Cours() {
     fetchCours();
     fetchCategorie();
   }, []);
-  console.log(dataCours)
 
   // Rendre les accents comme tous les autres caractères
   const removeAccents = (str) => {
@@ -161,41 +163,44 @@ export default function Cours() {
   }, [searchQuery, activeFilter, sortOption]);
 
   return (
-    <div className="bg-white py-6 md:py-8 shadow-lg rounded-xl mt-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        {/* SearchBar */}
-        <SearchBar
-          searchQuery={searchQuery}
-          handleSearchChange={handleSearchChange}
-          filteredSuggestions={filteredSuggestions}
-          handleSuggestionClick={handleSuggestionClick}
-          suggestionRef={suggestionRef}
-          inputRef={inputRef}
-          handleKeyDown={handleKeyDown}
-        />
+    <>
+      {/* {loading && <Loading />} */}
+      <div className="bg-white py-6 md:py-8 shadow-lg rounded-xl mt-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          {/* SearchBar */}
+          <SearchBar
+            searchQuery={searchQuery}
+            handleSearchChange={handleSearchChange}
+            filteredSuggestions={filteredSuggestions}
+            handleSuggestionClick={handleSuggestionClick}
+            suggestionRef={suggestionRef}
+            inputRef={inputRef}
+            handleKeyDown={handleKeyDown}
+          />
 
-        {/* FilterBar */}
-        <FilterBar
-          categories={categories}
-          activeFilter={activeFilter}
-          setActiveFilter={setActiveFilter}
-          sortOption={sortOption}
-          setSortOption={setSortOption}
-          sortOptions={sortOptions}
-        />
+          {/* FilterBar */}
+          <FilterBar
+            categories={categories}
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            sortOptions={sortOptions}
+          />
 
-        {/* Lessons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
-          {renderCards()}
+          {/* Lessons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
+            {renderCards()}
+          </div>
+
+          {/* Pagination */}
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            handlePageChange={setCurrentPage}
+          />
         </div>
-
-        {/* Pagination */}
-        <Pagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          handlePageChange={setCurrentPage}
-        />
       </div>
-    </div>
+    </>
   );
 }
