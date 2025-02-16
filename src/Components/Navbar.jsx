@@ -99,7 +99,7 @@ const Navbar = () => {
                 to="/login-etudiant"
                 className="block px-3 py-2 bg-primary rounded-[10px] hover:bg-primary/75 text-secondary"
               >
-                Connexion
+                Connexionsssssss
               </Link>
             )}
             {etudiantConnecter && (
