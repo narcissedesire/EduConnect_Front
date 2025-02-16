@@ -64,6 +64,7 @@ export default function Cours() {
     fetchCours();
     fetchCategorie();
   }, []);
+  console.log(dataCours)
 
   // Rendre les accents comme tous les autres caractères
   const removeAccents = (str) => {
