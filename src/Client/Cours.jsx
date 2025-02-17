@@ -18,6 +18,7 @@ export default function Cours() {
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
   const [dataCours, setDataCours] = useState([]);
+  console.log(dataCours)
 
   const [activeFilter, setActiveFilter] = useState("Tous");
   const [sortOption, setSortOption] = useState(sortOptions[0]);
