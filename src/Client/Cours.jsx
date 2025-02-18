@@ -32,7 +32,7 @@ export default function Cours() {
   // Récupération des données des cours
   const fetchCours = async () => {
     try {
-      const response = await fetch(`https://educonnect-back.onrender.com/api/cours`, {
+      const response = await fetch(`/api/cours`, {
         method: "GET",
       });
       if (!response.ok) {
