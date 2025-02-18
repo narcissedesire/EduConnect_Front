@@ -18,7 +18,6 @@ export default function Cours() {
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
   const [dataCours, setDataCours] = useState([]);
-  console.log(dataCours)
 
   const [activeFilter, setActiveFilter] = useState("Tous");
   const [sortOption, setSortOption] = useState(sortOptions[0]);
@@ -33,7 +32,7 @@ export default function Cours() {
   // Récupération des données des cours
   const fetchCours = async () => {
     try {
-      const response = await fetch(`/api/cours`, {
+      const response = await fetch(`https://educonnect-back.onrender.com/api/cours`, {
         method: "GET",
       });
       if (!response.ok) {
@@ -68,6 +67,7 @@ export default function Cours() {
     fetchCours();
     fetchCategorie();
   }, []);
+  console.log(dataCours)
 
   // Rendre les accents comme tous les autres caractères
   const removeAccents = (str) => {
