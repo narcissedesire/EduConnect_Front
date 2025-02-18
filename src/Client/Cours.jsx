@@ -32,11 +32,8 @@ export default function Cours() {
   // Récupération des données des cours
   const fetchCours = async () => {
     try {
-      const response = await fetch(`https://educonnect-back.onrender.com/api/cours`, {
+      const response = await fetch(`/api/cours`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
       if (!response.ok) {
         throw new Error("Erreur lors de la récupération des données");
@@ -52,11 +49,8 @@ export default function Cours() {
 
   const fetchCategorie = async () => {
     try {
-      const response = await fetch(`https://educonnect-back.onrender.com/api/categorie`, {
+      const response = await fetch(`api/categorie`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
       if (!response.ok) {
         throw new Error("Erreur lors de la récupération des données");
@@ -73,8 +67,7 @@ export default function Cours() {
     fetchCours();
     fetchCategorie();
   }, []);
-  console.log(dataCours)
-
+  // console.log(dataCours);
   // Rendre les accents comme tous les autres caractères
   const removeAccents = (str) => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
