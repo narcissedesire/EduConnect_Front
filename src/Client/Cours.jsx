@@ -59,7 +59,7 @@ export default function Cours() {
       setCategories(data.categorie);
     } catch (error) {
       setError(error.message);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
